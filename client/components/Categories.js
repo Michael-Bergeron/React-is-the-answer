@@ -12,6 +12,8 @@ const Categories = props => {
           selectQuestion = { props.selectQuestion }
           answeredQuestions = { props.answeredQuestions }
           clues = { category.clues }
+          key = { category.id }
+          id = { category.id }
         />
         )}
       {/* display all the categories */}
