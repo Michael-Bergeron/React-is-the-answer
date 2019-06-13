@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { categories } from '../../testdata';
 import Gameboard from './Gameboard';
 import Response from './Response';
 import Scoreboard from './Scoreboard';
@@ -12,7 +11,8 @@ export default class App extends Component {
       results: [],
       currentQuestion: {},
       answeredQuestions: [],
-      score: 0,
+      score: [0, 0],
+      currentPlayer: 1,
       userResponse: ''
       
     };
@@ -34,7 +34,6 @@ export default class App extends Component {
               .then(res => res.json())
               .then(clues => {
                 this.setState({ results: this.state.results.concat(clues)});
-                console.log(clues);
               })
           })
         })
@@ -51,13 +50,20 @@ export default class App extends Component {
   }
 
   submitResponse(event) {
-      let newScore = this.state.score;
+      let oldScores = [...this.state.score];
+      let newScore = this.state.score[this.state.currentPlayer];
       if (this.state.userResponse.toLowerCase() === this.state.currentQuestion.answer.toLowerCase()) {
-        newScore += this.state.currentQuestion.value;
+        newScore += this.state.currentQuestion.value || 1000;
       } else {
-        newScore -= this.state.currentQuestion.value;
+        newScore -= this.state.currentQuestion.value || 1000;
       }
-      this.setState({ currentQuestion: {}, score: newScore });
+      oldScores[this.state.currentPlayer] = newScore;
+      this.setState({ currentQuestion: {}, score: oldScores });
+  }
+
+  addPlayer() {
+    this.setState({ score: [0,0,0] })
+    console.log(this.state.score)
   }
 
   render() {
@@ -69,7 +75,10 @@ export default class App extends Component {
           categories = { this.state.results }
           answeredQuestions = { this.state.answeredQuestions }
           />
-        <Scoreboard score = {this.state.score}/>
+        <Scoreboard 
+        score = {this.state.score}
+        addPlayer = {this.addPlayer.bind(this)}
+        />
         <Response 
           recordResponse = {this.recordResponse}
           submitResponse = {this.submitResponse}

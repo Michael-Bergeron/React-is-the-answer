@@ -2,22 +2,33 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Scoreboard = props => {
-  /*
-    Scoreboard will live inside of App and the 'score' value of the answered question will need to be added to or subtracted
-    from the score of the current quiz session.
-
-    I don't think it needs to be an actual board. An <h1> tag with a big number will allow them to visibly practice state/prop
-    passing.
-  */
   return (
-    <div id={'scoreboard'} data-testid="scoreboard">
-      ${props.score}
-    </div>
-  );
+    <>
+      {props.score.length > 2 ? (
+        <>
+          <h3 className = "player">Player 1</h3>
+          <div id={'scoreboard'} data-testid="scoreboard">
+            ${props.score[1]}
+          </div>
+          <h3 className = "player">Player 2</h3>
+          <div id={'scoreboard'} data-testid="scoreboard">
+              ${props.score[0]}
+          </div>
+         </>) : 
+        (
+        <>
+         <div id={'scoreboard'} data-testid="scoreboard">
+            ${props.score[1]}
+          </div>
+          <div id={'scoreboard'}><button onClick={() => props.addPlayer()}>Add Player 2</button></div>
+         </>
+      )}
+    </>
+  )
 };
 
 Scoreboard.propTypes = {
-  score: PropTypes.number,
+  score: PropTypes.array
 }
 
 export default Scoreboard;

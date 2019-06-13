@@ -4,6 +4,7 @@ import Categories from './Categories'
 
 const Gameboard = props => {
   return (
+    //on question popped up have listener for left shift and right shift for players
     <div data-testid="gameboard" id={props.currentQuestion.question ? "question" : "gameboard"}>
     {props.currentQuestion.question ? 
       (<div>{props.currentQuestion.question}</div>) :
