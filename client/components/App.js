@@ -24,15 +24,22 @@ export default class App extends Component {
     this.submitResponse = this.submitResponse.bind(this);
   }
   componentDidMount() {
-    fetch("http://jservice.io/api/categories?count=5")
+    fetch("http://jservice.io/api/categories?count=100")
       .then(res => res.json())
       .then(
         (result) => {
           // map results
-          result.map(category => {
+          let newResults = [];
+          for (let i = 0; i <100; i+=20){
+            let index = Math.floor(Math.random()*20)
+            newResults.push(result[index+i])
+          }
+          newResults.map(category => {
             fetch(`http://jservice.io/api/category?id=${category.id}`)
               .then(res => res.json())
               .then(clues => {
+                let newClues = clues.clues.slice(0,5)
+                clues.clues = newClues;
                 this.setState({ results: this.state.results.concat(clues)});
               })
           })
@@ -62,8 +69,17 @@ export default class App extends Component {
         newScore -= this.state.currentQuestion.value || 1000;
       }
       oldScores[this.state.currentPlayer] = newScore;
+      document.getElementsByClassName('player1')[0].style.backgroundColor = '#050be9'
+      document.getElementsByClassName('player2')[0].style.backgroundColor = '#050be9'
+      if (this.state.multiplayerMode && oldScores[1] > oldScores[2]){
+        document.getElementsByClassName('player1')[0].style.backgroundColor = 'green'
+      }
+      else if(this.state.multiplayerMode && oldScores[1] < oldScores[2]){
+        document.getElementsByClassName('player2')[0].style.backgroundColor = 'green'
+      }
       const resetPlayer = this.state.multiplayerMode ? 0 : 1;
       this.setState({ currentQuestion: {}, score: oldScores, currentPlayer: resetPlayer});
+
   }
 
   addPlayer() {

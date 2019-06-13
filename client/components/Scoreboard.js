@@ -6,11 +6,11 @@ const Scoreboard = props => {
     <>
       {props.score.length > 2 ? (
         <>
-          <div id={'scoreboard'} data-testid="scoreboard">
+          <div id={'scoreboard'} className = 'player1' data-testid="scoreboard">
             <p className = 'playerName'>Player 1 - press "z"</p>
             <div>${props.score[1]}</div>
           </div>
-          <div id={'scoreboard'} data-testid="scoreboard">
+          <div id={'scoreboard'} className = 'player2' data-testid="scoreboard">
              <p className = 'playerName'>Player 2 - press "m"</p>
               ${props.score[2]}
           </div>
